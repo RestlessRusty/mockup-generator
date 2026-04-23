@@ -1,501 +1,370 @@
 /* ========================================
    RESET & BASE
    ======================================== */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  color:#fff;
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 20px;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: #e0e0e0;
-  line-height: 1.6;
-}
+a{color:#7f5af0;text-decoration:none}
+a:hover{color:#c4b5fd;text-decoration:underline}
 
-a {
-  color: #a78bfa;
-  text-decoration: none;
+/* ========================================
+   ANIMATED BACKGROUND BLOBS
+   ======================================== */
+.bg-blob{
+  position:fixed;border-radius:50%;
+  filter:blur(100px);opacity:.3;
+  pointer-events:none;z-index:0;
 }
+.bg-blob.a{width:500px;height:500px;background:#7f5af0;top:-120px;left:-100px;animation:fA 18s ease-in-out infinite}
+.bg-blob.b{width:400px;height:400px;background:#2cb67d;bottom:-80px;right:-80px;animation:fB 22s ease-in-out infinite}
+.bg-blob.c{width:300px;height:300px;background:#e16162;top:50%;left:55%;animation:fC 20s ease-in-out infinite}
+@keyframes fA{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,80px)}}
+@keyframes fB{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-60px)}}
+@keyframes fC{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
 
-a:hover {
-  color: #c4b5fd;
-  text-decoration: underline;
+/* ========================================
+   CONTENT WRAPPER
+   ======================================== */
+.content{
+  position:relative;z-index:1;
+  width:100%;max-width:900px;
+  display:flex;flex-direction:column;align-items:center;
 }
 
 /* ========================================
    HEADER
    ======================================== */
-.header {
-  text-align: center;
-  padding: 2rem 1rem 1rem;
+h1{
+  font-size:2.8rem;margin-bottom:10px;
+  background:linear-gradient(135deg,#7f5af0,#2cb67d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-align:center;font-weight:900;
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #ffffff;
-}
-
-.subtitle {
-  color: #a0a0c0;
-  font-size: 1rem;
-  margin-top: 0.25rem;
+.subtitle{
+  color:#94a1b2;margin-bottom:32px;
+  font-size:1.1rem;text-align:center;
 }
 
 /* ========================================
-   APP CONTAINER
+   SECTION LABELS
    ======================================== */
-.app-container {
-  display: flex;
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 1rem auto;
-  padding: 0 1.5rem;
+.section-label{
+  width:100%;font-size:.8rem;font-weight:800;
+  color:#7f5af0;text-transform:uppercase;
+  letter-spacing:.15em;margin:24px 0 12px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(127,90,240,.2);
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;
+  background:rgba(127,90,240,.15);
 }
 
 /* ========================================
-   CONTROLS PANEL (LEFT)
+   GLASS CARD
    ======================================== */
-.controls-panel {
-  width: 340px;
-  min-width: 340px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.control-group {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-}
-
-.control-group h2 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #c0c0e0;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.step-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: #a78bfa;
-  color: #0f0c29;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  font-weight: 800;
+.card{
+  width:100%;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  padding:24px;
+  animation:fadeIn .4s ease;
 }
 
 /* ========================================
    UPLOAD ZONE
    ======================================== */
-.upload-zone {
-  border: 2px dashed rgba(167, 139, 250, 0.4);
-  border-radius: 10px;
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+.upload-zone{
+  border:2px dashed rgba(127,90,240,.3);
+  border-radius:14px;
+  padding:2rem;
+  text-align:center;
+  cursor:pointer;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
 }
 
 .upload-zone:hover,
-.upload-zone.dragover {
-  border-color: #a78bfa;
-  background: rgba(167, 139, 250, 0.08);
+.upload-zone.dragover{
+  border-color:#7f5af0;
+  background:rgba(127,90,240,.08);
 }
 
-.upload-icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
+.upload-icon{font-size:2.4rem;display:block;margin-bottom:.5rem}
+
+.upload-link{
+  color:#7f5af0;font-weight:800;cursor:pointer;
 }
 
-.upload-link {
-  color: #a78bfa;
-  font-weight: 700;
-  cursor: pointer;
+.upload-hint{
+  font-size:.75rem;color:#94a1b2;margin-top:.25rem;
 }
 
-.upload-hint {
-  font-size: 0.75rem;
-  color: #808090;
-  margin-top: 0.25rem;
+.upload-preview{
+  display:none;max-width:100%;max-height:120px;
+  border-radius:8px;margin:0 auto;
+}
+.upload-preview.visible{display:block}
+.upload-content.hidden{display:none}
+
+/* ========================================
+   OPTION BAR (sizes, orientation, frames)
+   ======================================== */
+.option-bar{
+  display:flex;gap:8px;width:100%;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:6px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
-.upload-preview {
-  display: none;
-  max-width: 100%;
-  max-height: 150px;
-  border-radius: 6px;
-  margin: 0 auto;
+.option-btn{
+  padding:10px 20px;border:none;border-radius:12px;
+  background:transparent;color:#94a1b2;
+  font-family:inherit;font-weight:700;font-size:.85rem;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:8px;
 }
 
-.upload-preview.visible {
-  display: block;
+.option-btn:hover{
+  color:#fff;background:rgba(255,255,255,.08);
 }
 
-.upload-content.hidden {
-  display: none;
+.option-btn.active{
+  background:linear-gradient(135deg,#7f5af0,#6236d6);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(127,90,240,.3);
+}
+
+.option-sub{
+  font-size:.65rem;
+  background:rgba(255,255,255,.15);
+  padding:2px 8px;border-radius:10px;font-weight:800;
+}
+
+.option-btn.active .option-sub{
+  background:rgba(255,255,255,.25);
 }
 
 /* ========================================
-   SIZE BUTTONS
+   ORIENTATION ICONS
    ======================================== */
-.size-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+.orient-icon{
+  display:inline-block;
+  border:2px solid currentColor;
+  border-radius:2px;
+}
+.portrait-icon{width:12px;height:17px}
+.landscape-icon{width:17px;height:12px}
+
+/* ========================================
+   FRAME PREVIEWS
+   ======================================== */
+.fp{
+  display:inline-block;
+  width:16px;height:20px;
+  border-radius:2px;
+  background:#888;
+  flex-shrink:0;
+}
+.fp-none{border:1px dashed #aaa}
+.fp-black{border:3px solid #111}
+.fp-white{border:3px solid #f0f0f0}
+.fp-wood{border:3px solid #8B5E3C}
+
+/* ========================================
+   TEMPLATE ROW
+   ======================================== */
+.template-row{
+  display:flex;gap:12px;width:100%;
+  overflow-x:auto;
+  padding:8px 0;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
 }
 
-.size-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.6rem;
-  color: #c0c0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  font-family: 'Nunito', sans-serif;
+/* Hide scrollbar but keep functionality */
+.template-row::-webkit-scrollbar{height:6px}
+.template-row::-webkit-scrollbar-track{background:transparent}
+.template-row::-webkit-scrollbar-thumb{
+  background:rgba(127,90,240,.3);border-radius:3px;
+}
+.template-row::-webkit-scrollbar-thumb:hover{
+  background:rgba(127,90,240,.5);
 }
 
-.size-btn strong {
-  font-size: 1rem;
-  color: #e0e0e0;
+.template-thumb{
+  flex:0 0 calc(20% - 10px);
+  min-width:140px;
+  aspect-ratio:4/3;
+  border-radius:14px;
+  border:2px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  overflow:hidden;
+  transition:all .3s ease;
+  position:relative;
+  scroll-snap-align:start;
+  background:rgba(255,255,255,.04);
 }
 
-.size-btn span {
-  font-size: 0.7rem;
-  color: #808090;
+.template-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform .3s ease;
 }
 
-.size-btn:hover {
-  border-color: rgba(167, 139, 250, 0.5);
-  background: rgba(167, 139, 250, 0.1);
+.template-thumb:hover{
+  border-color:rgba(127,90,240,.4);
+  transform:translateY(-4px);
+  box-shadow:0 8px 25px rgba(127,90,240,.2);
 }
 
-.size-btn.active {
-  border-color: #a78bfa;
-  background: rgba(167, 139, 250, 0.15);
+.template-thumb:hover img{
+  transform:scale(1.05);
 }
 
-.size-btn.active strong {
-  color: #a78bfa;
+.template-thumb.active{
+  border-color:#7f5af0;
+  box-shadow:0 8px 30px rgba(127,90,240,.35);
+}
+
+.template-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.7));
+  color:#fff;font-size:.7rem;font-weight:700;
+  padding:16px 8px 6px;text-align:center;
 }
 
 /* ========================================
-   ORIENTATION BUTTONS
+   PREVIEW
    ======================================== */
-.orientation-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+.preview-card{
+  display:flex;align-items:center;justify-content:center;
+  min-height:300px;padding:16px;
+  position:relative;
 }
 
-.orient-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.75rem;
-  color: #c0c0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.8rem;
+#mockupCanvas{
+  max-width:100%;max-height:70vh;
+  border-radius:10px;display:none;
 }
 
-.orient-btn:hover {
-  border-color: rgba(167, 139, 250, 0.5);
-}
+#mockupCanvas.visible{display:block}
 
-.orient-btn.active {
-  border-color: #a78bfa;
-  background: rgba(167, 139, 250, 0.15);
-  color: #a78bfa;
+.preview-hint{
+  color:#94a1b2;font-size:.9rem;font-weight:600;
 }
-
-.orient-icon {
-  border: 2px solid currentColor;
-  border-radius: 2px;
-}
-
-.portrait-icon {
-  width: 20px;
-  height: 28px;
-}
-
-.landscape-icon {
-  width: 28px;
-  height: 20px;
-}
-
-/* ========================================
-   TEMPLATE GRID
-   ======================================== */
-.template-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-}
-
-.template-thumb {
-  aspect-ratio: 4/3;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.template-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.template-thumb:hover {
-  border-color: rgba(167, 139, 250, 0.5);
-}
-
-.template-thumb.active {
-  border-color: #a78bfa;
-  box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
-}
-
-.template-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 0.6rem;
-  padding: 2px 4px;
-  text-align: center;
-}
-
-/* ========================================
-   FRAME BUTTONS
-   ======================================== */
-.frame-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-}
-
-.frame-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.5rem;
-  color: #c0c0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.7rem;
-}
-
-.frame-btn:hover {
-  border-color: rgba(167, 139, 250, 0.5);
-}
-
-.frame-btn.active {
-  border-color: #a78bfa;
-  background: rgba(167, 139, 250, 0.15);
-}
-
-.frame-preview {
-  width: 30px;
-  height: 38px;
-  border-radius: 2px;
-}
-
-.fp-none {
-  background: #888;
-  border: 1px dashed #aaa;
-}
-
-.fp-black {
-  background: #888;
-  border: 3px solid #111;
-}
-
-.fp-white {
-  background: #888;
-  border: 3px solid #f0f0f0;
-}
-
-.fp-wood {
-  background: #888;
-  border: 3px solid #8B5E3C;
-}
+.preview-hint.hidden{display:none}
 
 /* ========================================
    DOWNLOAD BUTTONS
    ======================================== */
-.download-buttons {
-  display: flex;
-  gap: 0.5rem;
+.download-row{
+  display:flex;gap:12px;width:100%;
+  margin-top:16px;
 }
 
-.download-btn {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: #a78bfa;
-  color: #0f0c29;
+.download-btn{
+  flex:1;
+  padding:14px 20px;border:none;border-radius:14px;
+  font-family:'Nunito',sans-serif;
+  font-size:.9rem;font-weight:800;
+  cursor:pointer;transition:all .3s ease;
+  background:linear-gradient(135deg,#7f5af0,#6236d6);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(127,90,240,.3);
 }
 
-.download-btn:hover {
-  background: #c4b5fd;
-  transform: translateY(-1px);
+.download-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(127,90,240,.4);
 }
 
-.download-btn.secondary {
-  background: rgba(167, 139, 250, 0.2);
-  color: #a78bfa;
-  border: 1px solid rgba(167, 139, 250, 0.3);
+.download-btn.secondary{
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);
+  color:#94a1b2;
+  box-shadow:none;
 }
 
-.download-btn.secondary:hover {
-  background: rgba(167, 139, 250, 0.3);
+.download-btn.secondary:hover{
+  color:#fff;
+  border-color:rgba(127,90,240,.3);
+  box-shadow:0 8px 25px rgba(127,90,240,.15);
 }
 
 /* ========================================
-   PREVIEW PANEL (RIGHT)
+   KO-FI CARD
    ======================================== */
-.preview-panel {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  position: sticky;
-  top: 1rem;
+.kofi-card{
+  text-align:center;margin-top:24px;
+  padding:16px 20px;
 }
 
-.preview-wrapper {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 1rem;
-  text-align: center;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+.kofi-text{
+  color:#94a1b2;font-size:.85rem;margin-bottom:10px;
 }
 
-#mockupCanvas {
-  max-width: 100%;
-  max-height: 80vh;
-  border-radius: 8px;
-  display: none;
+.kofi-link{
+  color:#7f5af0;font-weight:700;
+  text-decoration:none;
 }
 
-#mockupCanvas.visible {
-  display: block;
-}
-
-.preview-hint {
-  color: #606080;
-  font-size: 0.9rem;
-}
-
-.preview-hint.hidden {
-  display: none;
+.kofi-link:hover{
+  color:#c4b5fd;text-decoration:underline;
 }
 
 /* ========================================
    FOOTER
    ======================================== */
-.footer {
-  text-align: center;
-  padding: 2rem 1rem;
-  margin-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+footer{
+  margin-top:24px;color:#94a1b2;
+  font-size:.75rem;text-align:center;
 }
 
-.footer p {
-  font-size: 0.85rem;
-  color: #808090;
-}
+footer a{color:#7f5af0;font-weight:700}
 
-.footer-sub {
-  font-size: 0.75rem !important;
-  margin-top: 0.25rem;
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 /* ========================================
    RESPONSIVE
    ======================================== */
-@media (max-width: 900px) {
-  .app-container {
-    flex-direction: column;
-  }
-
-  .controls-panel {
-    width: 100%;
-    min-width: unset;
-  }
-
-  .preview-panel {
-    position: static;
-  }
-
-  .template-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
+@media(max-width:600px){
+  body{padding:20px 12px}
+  h1{font-size:2rem}
+  .option-bar{gap:4px;padding:4px}
+  .option-btn{padding:8px 14px;font-size:.8rem}
+  .template-thumb{flex:0 0 calc(40% - 6px);min-width:120px}
+  .download-row{flex-direction:column}
+  .download-btn{width:100%}
 }
 
 /* ========================================
-   SCROLLBAR
+   SCROLLBAR (global)
    ======================================== */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(167, 139, 250, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(167, 139, 250, 0.5);
-}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+::-webkit-scrollbar-thumb{background:rgba(127,90,240,.3);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(127,90,240,.5)}
