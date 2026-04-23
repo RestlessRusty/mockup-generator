@@ -1,58 +1,58 @@
 const TEMPLATES = [
   {
     id: 'livingroom',
-    thumbFile: 'templates/template-1-livingroom-thumb.jpg',
-    fullFile: 'templates/template-1-livingroom.jpg',
+    thumbFile: 'templates/template-1-thumb.png',
+    fullFile: 'templates/template-1.png',
     name: 'Living Room',
-    imgW: 4000,
-    imgH: 6000,
-    wallRealW: 3200,
-    anchorX: 2000,
-    anchorY: 2400,
+    imgW: 3072,
+    imgH: 2048,
+    wallRealW: 5128,
+    anchorX: 1560,
+    anchorY: 535,
   },
   {
-    id: 'minimal',
-    thumbFile: 'templates/template-2-minimal-thumb.jpg',
-    fullFile: 'templates/template-2-minimal.jpg',
-    name: 'Minimal',
-    imgW: 3358,
-    imgH: 2874,
-    wallRealW: 2800,
-    anchorX: 1679,
-    anchorY: 1100,
+    id: 'bedroom',
+    thumbFile: 'templates/template-2-thumb.png',
+    fullFile: 'templates/template-2.png',
+    name: 'Bedroom',
+    imgW: 3072,
+    imgH: 2048,
+    wallRealW: 5047,
+    anchorX: 1480,
+    anchorY: 500,
   },
   {
-    id: 'brick',
-    thumbFile: 'templates/template-3-brick-thumb.jpg',
-    fullFile: 'templates/template-3-brick.jpg',
-    name: 'Brick Wall',
-    imgW: 4032,
-    imgH: 3024,
-    wallRealW: 3000,
-    anchorX: 2016,
-    anchorY: 1200,
+    id: 'kidsroom',
+    thumbFile: 'templates/template-3-thumb.png',
+    fullFile: 'templates/template-3.png',
+    name: 'Kids Room',
+    imgW: 3072,
+    imgH: 2048,
+    wallRealW: 4853,
+    anchorX: 1610,
+    anchorY: 520,
   },
   {
-    id: 'dark',
-    thumbFile: 'templates/template-4-dark-thumb.jpg',
-    fullFile: 'templates/template-4-dark.jpg',
-    name: 'Dark Room',
-    imgW: 3024,
-    imgH: 4032,
-    wallRealW: 2600,
-    anchorX: 1512,
-    anchorY: 1600,
+    id: 'office',
+    thumbFile: 'templates/template-4-thumb.png',
+    fullFile: 'templates/template-4.png',
+    name: 'Home Office',
+    imgW: 3072,
+    imgH: 2048,
+    wallRealW: 5112,
+    anchorX: 1690,
+    anchorY: 480,
   },
   {
-    id: 'warm',
-    thumbFile: 'templates/template-5-warm-thumb.jpg',
-    fullFile: 'templates/template-5-warm.jpg',
-    name: 'Warm Room',
-    imgW: 3456,
-    imgH: 5184,
-    wallRealW: 3000,
-    anchorX: 1728,
-    anchorY: 2000,
+    id: 'hallway',
+    thumbFile: 'templates/template-5-thumb.png',
+    fullFile: 'templates/template-5.png',
+    name: 'Hallway',
+    imgW: 3072,
+    imgH: 2048,
+    wallRealW: 5095,
+    anchorX: 1500,
+    anchorY: 620,
   },
 ];
 
@@ -195,10 +195,6 @@ function loadTemplateImage(tpl) {
 
 /* ========================================
    RENDER MOCKUP
-   
-   Canvas is FULL RESOLUTION internally.
-   CSS max-width scales it down visually.
-   Download grabs the full-res canvas directly.
    ======================================== */
 async function renderMockup() {
   if (!state.designImg) return;
@@ -209,17 +205,13 @@ async function renderMockup() {
 
   const bgImg = await loadTemplateImage(tpl);
 
-  // Canvas = full original resolution
   canvas.width  = tpl.imgW;
   canvas.height = tpl.imgH;
 
-  // Draw room
   ctx.drawImage(bgImg, 0, 0, tpl.imgW, tpl.imgH);
 
-  // Scale: pixels per mm
   const pxPerMm = tpl.imgW / tpl.wallRealW;
 
-  // Paper in pixels
   let paperPxW, paperPxH;
   if (state.orientation === 'portrait') {
     paperPxW = paper.w * pxPerMm;
@@ -229,16 +221,13 @@ async function renderMockup() {
     paperPxH = paper.w * pxPerMm;
   }
 
-  // Frame
   const framePx = frame.width * pxPerMm;
   const totalW  = paperPxW + framePx * 2;
   const totalH  = paperPxH + framePx * 2;
 
-  // Position centered on anchor
   const x = tpl.anchorX - totalW / 2;
   const y = tpl.anchorY - totalH / 2;
 
-  // Shadow
   if (frame.shadow) {
     ctx.save();
     ctx.shadowColor   = 'rgba(0,0,0,0.45)';
@@ -250,24 +239,19 @@ async function renderMockup() {
     ctx.restore();
   }
 
-  // Frame border
   if (framePx > 0) {
     ctx.fillStyle = frame.color;
     ctx.fillRect(x, y, totalW, totalH);
   }
 
-  // Art area
   const artX = x + framePx;
   const artY = y + framePx;
 
-  // White bg for transparent PNGs
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(artX, artY, paperPxW, paperPxH);
 
-  // Draw design
   ctx.drawImage(state.designImg, artX, artY, paperPxW, paperPxH);
 
-  // Inner border
   if (frame.shadow) {
     ctx.save();
     ctx.strokeStyle = 'rgba(0,0,0,0.12)';
@@ -276,14 +260,12 @@ async function renderMockup() {
     ctx.restore();
   }
 
-  // Show
   canvas.classList.add('visible');
   previewHint.classList.add('hidden');
 }
 
 /* ========================================
-   DOWNLOAD — Just grab the canvas directly
-   It's already full resolution!
+   DOWNLOAD
    ======================================== */
 function downloadMockup(format) {
   if (!state.designImg) {
