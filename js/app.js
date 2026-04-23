@@ -61,6 +61,7 @@ const PAPER_SIZES = {
   A4: { w: 210, h: 297 },
   A3: { w: 297, h: 420 },
   A2: { w: 420, h: 594 },
+  A1: { w: 594, h: 841 },
 };
 
 const FRAME_STYLES = {
