@@ -1,69 +1,58 @@
-/* ========================================
-   TEMPLATE CONFIGURATION
-   
-   thumbFile = small compressed thumbnail (~300px wide)
-   fullFile  = medium resolution for canvas (~2000px wide)
-   
-   Create thumbnails from your Unsplash downloads:
-   - Resize to 300px wide, save as template-X-thumb.jpg
-   - Resize to 2000px wide, save as template-X.jpg
-   ======================================== */
-
 const TEMPLATES = [
   {
     id: 'livingroom',
     thumbFile: 'templates/template-1-livingroom-thumb.jpg',
     fullFile: 'templates/template-1-livingroom.jpg',
     name: 'Living Room',
-    imgW: 2000,
-    imgH: 3000,
+    imgW: 4000,
+    imgH: 6000,
     wallRealW: 3200,
-    anchorX: 1000,
-    anchorY: 1200,
+    anchorX: 2000,
+    anchorY: 2400,
   },
   {
     id: 'minimal',
     thumbFile: 'templates/template-2-minimal-thumb.jpg',
     fullFile: 'templates/template-2-minimal.jpg',
     name: 'Minimal',
-    imgW: 2000,
-    imgH: 1713,
+    imgW: 3358,
+    imgH: 2874,
     wallRealW: 2800,
-    anchorX: 1000,
-    anchorY: 656,
+    anchorX: 1679,
+    anchorY: 1100,
   },
   {
     id: 'brick',
     thumbFile: 'templates/template-3-brick-thumb.jpg',
     fullFile: 'templates/template-3-brick.jpg',
     name: 'Brick Wall',
-    imgW: 2000,
-    imgH: 1500,
+    imgW: 4032,
+    imgH: 3024,
     wallRealW: 3000,
-    anchorX: 1000,
-    anchorY: 595,
+    anchorX: 2016,
+    anchorY: 1200,
   },
   {
     id: 'dark',
     thumbFile: 'templates/template-4-dark-thumb.jpg',
     fullFile: 'templates/template-4-dark.jpg',
     name: 'Dark Room',
-    imgW: 2000,
-    imgH: 2667,
+    imgW: 3024,
+    imgH: 4032,
     wallRealW: 2600,
-    anchorX: 1000,
-    anchorY: 1058,
+    anchorX: 1512,
+    anchorY: 1600,
   },
   {
     id: 'warm',
     thumbFile: 'templates/template-5-warm-thumb.jpg',
     fullFile: 'templates/template-5-warm.jpg',
     name: 'Warm Room',
-    imgW: 2000,
-    imgH: 3000,
+    imgW: 3456,
+    imgH: 5184,
     wallRealW: 3000,
-    anchorX: 1000,
-    anchorY: 1157,
+    anchorX: 1728,
+    anchorY: 2000,
   },
 ];
 
@@ -81,9 +70,6 @@ const FRAME_STYLES = {
   wood:  { width: 14, color: '#8B5E3C',     shadow: true  },
 };
 
-/* ========================================
-   STATE
-   ======================================== */
 let state = {
   designImg: null,
   paperSize: 'A4',
@@ -93,28 +79,24 @@ let state = {
   templateImgCache: {},
 };
 
-/* ========================================
-   DOM ELEMENTS
-   ======================================== */
-const fileInput       = document.getElementById('fileInput');
-const uploadZone      = document.getElementById('uploadZone');
-const uploadContent   = document.getElementById('uploadContent');
-const uploadPreview   = document.getElementById('uploadPreview');
-const previewHint     = document.getElementById('previewHint');
-const canvas          = document.getElementById('mockupCanvas');
-const ctx             = canvas.getContext('2d');
-const templateGrid    = document.getElementById('templateGrid');
-const downloadPng     = document.getElementById('downloadPng');
-const downloadJpg     = document.getElementById('downloadJpg');
+const fileInput     = document.getElementById('fileInput');
+const uploadZone    = document.getElementById('uploadZone');
+const uploadContent = document.getElementById('uploadContent');
+const uploadPreview = document.getElementById('uploadPreview');
+const previewHint   = document.getElementById('previewHint');
+const canvas        = document.getElementById('mockupCanvas');
+const ctx           = canvas.getContext('2d');
+const templateGrid  = document.getElementById('templateGrid');
+const downloadPng   = document.getElementById('downloadPng');
+const downloadJpg   = document.getElementById('downloadJpg');
 
 /* ========================================
-   INIT: Build template thumbnails
+   INIT: Template thumbnails
    ======================================== */
 function initTemplates() {
   TEMPLATES.forEach((tpl, i) => {
     const thumb = document.createElement('div');
     thumb.className = 'template-thumb' + (i === 0 ? ' active' : '');
-    thumb.dataset.index = i;
     thumb.innerHTML = `
       <img src="${tpl.thumbFile}" alt="${tpl.name}" loading="lazy">
       <div class="template-label">${tpl.name}</div>
@@ -159,7 +141,6 @@ function handleFile(file) {
     alert('Please upload a PNG, JPG, or SVG file.');
     return;
   }
-
   const reader = new FileReader();
   reader.onload = (e) => {
     const img = new Image();
@@ -195,7 +176,7 @@ setupButtons('#orientationButtons', 'orientation', 'orient');
 setupButtons('#frameButtons', 'frameStyle', 'frame');
 
 /* ========================================
-   LOAD TEMPLATE IMAGE (with cache)
+   LOAD FULL-RES TEMPLATE (cached)
    ======================================== */
 function loadTemplateImage(tpl) {
   return new Promise((resolve) => {
@@ -213,7 +194,11 @@ function loadTemplateImage(tpl) {
 }
 
 /* ========================================
-   CORE: Render Mockup
+   RENDER MOCKUP
+   
+   Canvas is FULL RESOLUTION internally.
+   CSS max-width scales it down visually.
+   Download grabs the full-res canvas directly.
    ======================================== */
 async function renderMockup() {
   if (!state.designImg) return;
@@ -224,17 +209,17 @@ async function renderMockup() {
 
   const bgImg = await loadTemplateImage(tpl);
 
-  // Set canvas to template size
+  // Canvas = full original resolution
   canvas.width  = tpl.imgW;
   canvas.height = tpl.imgH;
 
-  // Draw room background
+  // Draw room
   ctx.drawImage(bgImg, 0, 0, tpl.imgW, tpl.imgH);
 
-  // Pixels per mm
+  // Scale: pixels per mm
   const pxPerMm = tpl.imgW / tpl.wallRealW;
 
-  // Paper size in pixels
+  // Paper in pixels
   let paperPxW, paperPxH;
   if (state.orientation === 'portrait') {
     paperPxW = paper.w * pxPerMm;
@@ -244,22 +229,20 @@ async function renderMockup() {
     paperPxH = paper.w * pxPerMm;
   }
 
-  // Frame thickness in pixels
+  // Frame
   const framePx = frame.width * pxPerMm;
+  const totalW  = paperPxW + framePx * 2;
+  const totalH  = paperPxH + framePx * 2;
 
-  // Total dimensions
-  const totalW = paperPxW + framePx * 2;
-  const totalH = paperPxH + framePx * 2;
-
-  // Center on anchor
+  // Position centered on anchor
   const x = tpl.anchorX - totalW / 2;
   const y = tpl.anchorY - totalH / 2;
 
   // Shadow
   if (frame.shadow) {
     ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.45)';
-    ctx.shadowBlur  = 25 * pxPerMm;
+    ctx.shadowColor   = 'rgba(0,0,0,0.45)';
+    ctx.shadowBlur    = 25 * pxPerMm;
     ctx.shadowOffsetX = 4 * pxPerMm;
     ctx.shadowOffsetY = 6 * pxPerMm;
     ctx.fillStyle = frame.color;
@@ -273,33 +256,34 @@ async function renderMockup() {
     ctx.fillRect(x, y, totalW, totalH);
   }
 
-  // Art
+  // Art area
   const artX = x + framePx;
   const artY = y + framePx;
 
-  // White background behind art (for transparent PNGs)
+  // White bg for transparent PNGs
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(artX, artY, paperPxW, paperPxH);
 
   // Draw design
   ctx.drawImage(state.designImg, artX, artY, paperPxW, paperPxH);
 
-  // Inner border for realism
+  // Inner border
   if (frame.shadow) {
     ctx.save();
     ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-    ctx.lineWidth = 1.5 * pxPerMm;
+    ctx.lineWidth   = 1.5 * pxPerMm;
     ctx.strokeRect(artX, artY, paperPxW, paperPxH);
     ctx.restore();
   }
 
-  // Show canvas
+  // Show
   canvas.classList.add('visible');
   previewHint.classList.add('hidden');
 }
 
 /* ========================================
-   DOWNLOADS
+   DOWNLOAD — Just grab the canvas directly
+   It's already full resolution!
    ======================================== */
 function downloadMockup(format) {
   if (!state.designImg) {
