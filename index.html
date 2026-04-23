@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup Generator — Free Printable Art Previewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <h1>🖼️ Mockup Generator</h1>
+      <p class="subtitle">See your printable art on real walls — to scale.</p>
+    </div>
+  </header>
+
+  <!-- Main App -->
+  <main class="app-container">
+
+    <!-- LEFT PANEL: Controls -->
+    <section class="controls-panel">
+
+      <!-- Step 1: Upload -->
+      <div class="control-group">
+        <h2><span class="step-num">1</span> Upload Your Design</h2>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.svg" hidden>
+          <div class="upload-content" id="uploadContent">
+            <span class="upload-icon">📁</span>
+            <p>Drag & drop or <span class="upload-link">browse</span></p>
+            <p class="upload-hint">PNG, JPG, or SVG</p>
+          </div>
+          <img id="uploadPreview" class="upload-preview" alt="Preview">
+        </div>
+      </div>
+
+      <!-- Step 2: Paper Size -->
+      <div class="control-group">
+        <h2><span class="step-num">2</span> Select Paper Size</h2>
+        <div class="size-buttons" id="sizeButtons">
+          <button class="size-btn" data-size="A5" data-w="148" data-h="210">
+            <strong>A5</strong><span>148×210mm</span>
+          </button>
+          <button class="size-btn active" data-size="A4" data-w="210" data-h="297">
+            <strong>A4</strong><span>210×297mm</span>
+          </button>
+          <button class="size-btn" data-size="A3" data-w="297" data-h="420">
+            <strong>A3</strong><span>297×420mm</span>
+          </button>
+          <button class="size-btn" data-size="A2" data-w="420" data-h="594">
+            <strong>A2</strong><span>420×594mm</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Orientation -->
+      <div class="control-group">
+        <h2><span class="step-num">3</span> Orientation</h2>
+        <div class="orientation-buttons" id="orientationButtons">
+          <button class="orient-btn active" data-orient="portrait">
+            <div class="orient-icon portrait-icon"></div>
+            <span>Portrait</span>
+          </button>
+          <button class="orient-btn" data-orient="landscape">
+            <div class="orient-icon landscape-icon"></div>
+            <span>Landscape</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4: Room Template -->
+      <div class="control-group">
+        <h2><span class="step-num">4</span> Choose Room</h2>
+        <div class="template-grid" id="templateGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Step 5: Frame Style -->
+      <div class="control-group">
+        <h2><span class="step-num">5</span> Frame Style</h2>
+        <div class="frame-buttons" id="frameButtons">
+          <button class="frame-btn active" data-frame="none">
+            <div class="frame-preview fp-none"></div>
+            <span>None</span>
+          </button>
+          <button class="frame-btn" data-frame="black">
+            <div class="frame-preview fp-black"></div>
+            <span>Black</span>
+          </button>
+          <button class="frame-btn" data-frame="white">
+            <div class="frame-preview fp-white"></div>
+            <span>White</span>
+          </button>
+          <button class="frame-btn" data-frame="wood">
+            <div class="frame-preview fp-wood"></div>
+            <span>Wood</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Download -->
+      <div class="control-group">
+        <h2><span class="step-num">6</span> Download</h2>
+        <div class="download-buttons">
+          <button class="download-btn" id="downloadPng">⬇️ Download PNG</button>
+          <button class="download-btn secondary" id="downloadJpg">⬇️ Download JPG</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT PANEL: Preview -->
+    <section class="preview-panel">
+      <div class="preview-wrapper" id="previewWrapper">
+        <canvas id="mockupCanvas"></canvas>
+        <p class="preview-hint" id="previewHint">Upload a design to see the preview</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Made with ☕ — <a href="https://ko-fi.com/YOURUSERNAME" target="_blank" rel="noopener">Buy me a coffee on Ko-fi</a></p>
+    <p class="footer-sub">Room photos from <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>. 100% free, no sign-up, no tracking.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
